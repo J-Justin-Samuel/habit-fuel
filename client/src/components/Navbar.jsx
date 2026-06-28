@@ -7,7 +7,7 @@ export default function Navbar({ user, logout }) {
       <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
         <div className="flex items-center space-x-2 text-transparent bg-clip-text bg-gradient-to-r from-[#8B5CF6] to-[#A855F7] font-extrabold text-2xl tracking-wider">
           <CheckSquare className="w-7 h-7 text-[#8B5CF6] stroke-[2.5]" />
-          <span>RoutineUp</span>
+          <span>Habit Fuel</span>
         </div>
 
         {user && (

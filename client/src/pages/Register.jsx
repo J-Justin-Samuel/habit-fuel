@@ -30,7 +30,7 @@ export default function Register({ setAuth, setPage }) {
         Create Account
       </h2>
       <p className="text-center text-sm text-gray-400 mb-8">
-        Join RoutineUp and start tracking today
+        Join Habit Fuel and start tracking today
       </p>
 
       {error && (
