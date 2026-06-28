@@ -32,9 +32,10 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen pb-12">
+    // Applied background hex: #0B1120 with an elegant background gradient glow effect
+    <div className="min-h-screen bg-[#0B1120] bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-purple-950/20 via-[#0B1120] to-[#0B1120] text-[#F8FAFC] antialiased">
       <Navbar user={auth} logout={logout} />
-      <main className="py-4 sm:py-8">
+      <main className="py-8">
         {page === "login" && <Login setAuth={setAuth} setPage={setPage} />}
         {page === "register" && (
           <Register setAuth={setAuth} setPage={setPage} />
