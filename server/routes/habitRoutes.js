@@ -1,5 +1,5 @@
 import express from "express";
-import Habit from "../models/Habit.js";
+import Habit from "../models/habit.js";
 import { protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
