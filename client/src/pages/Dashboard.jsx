@@ -7,6 +7,9 @@ export default function Dashboard({ user }) {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
 
+  // Target base initialization from centralized runtime environments
+  const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
   const getPastDays = () => {
     const days = [];
     for (let i = 6; i >= 0; i--) {
@@ -23,7 +26,7 @@ export default function Dashboard({ user }) {
   const pastDays = getPastDays();
 
   const fetchHabits = async () => {
-    const res = await fetch("http://localhost:5000/api/habits", {
+    const res = await fetch(`${API_BASE_URL}/api/habits`, {
       headers: { Authorization: `Bearer ${user.token}` },
     });
     const data = await res.json();
@@ -37,7 +40,7 @@ export default function Dashboard({ user }) {
   const handleCreateHabit = async (e) => {
     e.preventDefault();
     if (!name) return;
-    const res = await fetch("http://localhost:5000/api/habits", {
+    const res = await fetch(`${API_BASE_URL}/api/habits`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -53,22 +56,19 @@ export default function Dashboard({ user }) {
   };
 
   const handleToggleHabit = async (habitId, dateStr) => {
-    const res = await fetch(
-      `http://localhost:5000/api/habits/${habitId}/toggle`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${user.token}`,
-        },
-        body: JSON.stringify({ date: dateStr }),
+    const res = await fetch(`${API_BASE_URL}/api/habits/${habitId}/toggle`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${user.token}`,
       },
-    );
+      body: JSON.stringify({ date: dateStr }),
+    });
     if (res.ok) fetchHabits();
   };
 
   const handleDeleteHabit = async (habitId) => {
-    const res = await fetch(`http://localhost:5000/api/habits/${habitId}`, {
+    const res = await fetch(`${API_BASE_URL}/api/habits/${habitId}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${user.token}` },
     });
