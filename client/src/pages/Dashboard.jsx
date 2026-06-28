@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
 import HabitItem from "../components/HabitItem";
-import { Plus } from "lucide-react";
+import { Plus, Target, Sparkles } from "lucide-react";
 
 export default function Dashboard({ user }) {
   const [habits, setHabits] = useState([]);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
 
-  // Generate date reference objects for the past 7 days locally
   const getPastDays = () => {
     const days = [];
     for (let i = 6; i >= 0; i--) {
@@ -24,11 +23,15 @@ export default function Dashboard({ user }) {
   const pastDays = getPastDays();
 
   const fetchHabits = async () => {
-    const res = await fetch("http://localhost:5000/api/habits", {
-      headers: { Authorization: `Bearer ${user.token}` },
-    });
-    const data = await res.json();
-    if (res.ok) setHabits(data);
+    try {
+      const res = await fetch("http://localhost:5000/api/habits", {
+        headers: { Authorization: `Bearer ${user.token}` },
+      });
+      const data = await res.json();
+      if (res.ok) setHabits(data);
+    } catch (e) {
+      console.error("Error fetching habits", e);
+    }
   };
 
   useEffect(() => {
@@ -77,52 +80,73 @@ export default function Dashboard({ user }) {
   };
 
   return (
-    <div class="max-w-4xl mx-auto px-4 py-8">
-      {/* Creation form */}
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
+      {/* Motivating Layout Header Area */}
+      <div className="mb-8">
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-800 tracking-tight flex items-center gap-2">
+          <Target className="w-7 h-7 text-indigo-600" /> Track Routines
+        </h1>
+        <p className="text-slate-500 text-sm mt-1">
+          Consistency creates continuous change. Track your last 7 days.
+        </p>
+      </div>
+
+      {/* Modernized Creation Card Form */}
       <form
         onSubmit={handleCreateHabit}
-        class="bg-white border border-gray-200 rounded-2xl p-5 shadow-xs mb-8 flex flex-col md:flex-row gap-4 items-end"
+        className="bg-white border border-slate-200/70 rounded-2xl p-6 shadow-sm mb-10 flex flex-col md:flex-row gap-4 items-end"
       >
-        <div class="flex-1 w-full">
-          <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">
-            Habit Name
+        <div className="flex-1 w-full">
+          <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">
+            Habit Identity
           </label>
           <input
             type="text"
-            placeholder="E.g., Read books"
+            placeholder="E.g., Morning Meditation"
             required
-            class="w-full text-sm border border-gray-300 px-3 py-2 rounded-lg outline-indigo-600"
+            className="w-full text-sm border border-slate-200 bg-slate-50/50 px-4 py-2.5 rounded-xl focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 outline-hidden transition-all duration-200 placeholder:text-slate-400 font-medium"
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
         </div>
-        <div class="flex-1 w-full">
-          <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">
-            Description
+
+        <div className="flex-1 w-full">
+          <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">
+            Target / Description
           </label>
           <input
             type="text"
-            placeholder="E.g., 20 pages a day"
-            class="w-full text-sm border border-gray-300 px-3 py-2 rounded-lg outline-indigo-600"
+            placeholder="E.g., 15 minutes clear mindedness"
+            className="w-full text-sm border border-slate-200 bg-slate-50/50 px-4 py-2.5 rounded-xl focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 outline-hidden transition-all duration-200 placeholder:text-slate-400 font-medium"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
         </div>
+
         <button
           type="submit"
-          class="w-full md:w-auto bg-indigo-600 text-white px-5 py-2 rounded-lg text-sm font-semibold flex items-center justify-center space-x-1 hover:bg-indigo-700 transition h-9.5"
+          className="w-full md:w-auto bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white px-6 py-2.5 rounded-xl text-sm font-bold flex items-center justify-center space-x-1.5 transition-all duration-200 shadow-md shadow-indigo-100 h-[42px] hover:scale-[1.02] habit-press-effect"
         >
-          <Plus class="w-4 h-4" />
-          <span>Add</span>
+          <Plus className="w-4 h-4" />
+          <span>Add Habit</span>
         </button>
       </form>
 
-      {/* Habit List */}
-      <div class="space-y-4">
+      {/* Render Lists Container */}
+      <div className="space-y-4">
         {habits.length === 0 ? (
-          <p class="text-center text-gray-500 py-12">
-            No habits tracked yet. Start creating your routine!
-          </p>
+          <div className="text-center bg-white border border-dashed border-slate-300/80 rounded-2xl py-16 px-4 shadow-2xs">
+            <div className="w-12 h-12 bg-indigo-50 text-indigo-500 rounded-full flex items-center justify-center mx-auto mb-3">
+              <Sparkles className="w-6 h-6" />
+            </div>
+            <h3 className="font-bold text-slate-700 text-base">
+              Your Dashboard is clean!
+            </h3>
+            <p className="text-slate-400 text-sm max-w-xs mx-auto mt-1">
+              No daily milestones configured. Fill out the fields above to
+              establish goals.
+            </p>
+          </div>
         ) : (
           habits.map((habit) => (
             <HabitItem

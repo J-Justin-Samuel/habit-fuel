@@ -6,7 +6,7 @@ import Dashboard from "./pages/Dashboard";
 
 export default function App() {
   const [auth, setAuth] = useState(null);
-  const [page, setPage] = useState("login"); // login, register, dashboard
+  const [page, setPage] = useState("login");
 
   useEffect(() => {
     const cachedUser = localStorage.getItem("user");
@@ -32,9 +32,9 @@ export default function App() {
   };
 
   return (
-    <div class="min-h-screen bg-gray-50">
+    <div className="min-h-screen pb-12">
       <Navbar user={auth} logout={logout} />
-      <main class="py-6">
+      <main className="py-4 sm:py-8">
         {page === "login" && <Login setAuth={setAuth} setPage={setPage} />}
         {page === "register" && (
           <Register setAuth={setAuth} setPage={setPage} />
